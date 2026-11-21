@@ -39,17 +39,17 @@ kind: Task
 metadata:
   name: flake8
 spec:
+  workspaces:
+    - name: source
   params:
     - name: image
+      description: The image to use for running flake8
       type: string
       default: python:3.9-slim
     - name: args
-      type: array
-      default:
-        - "--count"
-        - "--max-complexity=10"
-        - "--max-line-length=127"
-        - "--statistics"
+      description: Arguments to pass to flake8
+      type: string
+      default: "--count --max-complexity=10 --max-line-length=127 --statistics"
   steps:
     - name: flake8
       image: $(params.image)
@@ -60,5 +60,3 @@ spec:
         python -m pip install --upgrade pip wheel
         pip install -r requirements.txt
         flake8 $(params.args)
-  workspaces:
-    - name: source
